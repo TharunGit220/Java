@@ -1,0 +1,84 @@
+
+class Node{
+    String name;
+    Node next;
+}
+
+public class Linky {
+
+Node head;
+
+    public void Insert(String name ){
+        Node newnode = new Node();
+        newnode.name = name;
+        newnode.next = null;
+
+        if(head == null){
+            head = newnode;
+        }
+        else{
+            Node findlast = head;
+
+            while (findlast.next != null) {
+                findlast = findlast.next;
+            }
+
+            findlast.next = newnode;
+        }
+    }
+    public void InsertAtStart(String name ){
+        Node newnode = new Node();
+        newnode.name = name;
+        newnode.next = null;
+        newnode.next = head;
+        
+        head = newnode;
+
+    }
+
+    public void InsertAtAny(int index,String name ){
+        Node newnode = new Node();
+        newnode.name = name;
+        newnode.next = null;
+
+        if (index ==0) {
+            InsertAtStart(name);
+        }
+        else{
+        Node find = head;
+        for(int i=0;i<index-1;i++){
+            find = find.next;
+        }
+        newnode.next = find.next;
+        find.next = newnode;
+    }
+    }
+
+    public void delete(int index){
+
+        if (index ==0) {
+            head = head.next;
+        }
+        else{
+        Node find  = head;
+        Node temp  = null;
+
+        for(int i=0;i<index-1;i++){
+            find = find.next;
+        }
+        temp = find.next;
+        find.next = temp.next;
+        //System.out.println("Deleted " + temp.name);
+    }
+    }
+
+    public void show(){
+        Node print  = head;
+
+        while (print != null) {
+            System.out.println(print.name);
+            print = print.next;
+        }
+    }
+    
+}
