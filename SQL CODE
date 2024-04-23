@@ -5,6 +5,12 @@ CREATE TABLE company (
     industry VARCHAR2(40),
     has_placement CHAR(1) CHECK (has_placement IN ('Y', 'N'))
 );
+Data for Company:
+INTO company (company_name, industry, has_placement) VALUES ('Stratton Oakmont', 'Stocks', 'Y')
+INTO company (company_name, industry, has_placement) VALUES ('Cyberdyne Systems', 'Technology', 'N')
+INTO company (company_name, industry, has_placement) VALUES ('Weyland-Yutani Corp', 'Aerospace', 'Y')
+INTO company (company_name, industry, has_placement) VALUES ('Dunder Mifflin Paper', 'Retail', 'Y')
+INTO company (company_name, industry, has_placement) VALUES ('Stark Solutions', 'Consulting', 'Y');
 
 
 
@@ -16,13 +22,22 @@ CREATE TABLE timetable (
     day_of_the_week VARCHAR2(20) CHECK (day_of_the_week IN ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'))
 );
 
+CREATE TABLE student (
+    student_id NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
+    first_name VARCHAR2(50),
+    last_name VARCHAR2(50),
+    date_of_birth DATE,
+    email VARCHAR2(100) CONSTRAINT email_format_check CHECK (REGEXP_LIKE(email, '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'))
+);
+
+Data for Student 
+INSERT INTO student (first_name, last_name, date_of_birth, email) VALUES ('John', 'Doe', DATE '1998-07-22', 'john.doe@example.com');
+INSERT INTO student (first_name, last_name, date_of_birth, email) VALUES ('Jane', 'Smith', DATE '2000-11-15', 'jane.smith@example.com');
+INSERT INTO student (first_name, last_name, date_of_birth, email) VALUES ('Alice', 'Johnson', DATE '1999-09-04', 'alice.johnson@example.com');
+INSERT INTO student (first_name, last_name, date_of_birth, email) VALUES ('Bob', 'Brown', DATE '1998-03-17', 'bob.brown@example.com');
+INSERT INTO student (first_name, last_name, date_of_birth, email) VALUES ('Carol', 'Martinez', DATE '2001-01-26', 'carol.martinez@example.com');
 
 
-INTO company (company_name, industry, has_placement) VALUES ('Stratton Oakmont', 'Stocks', 'Y')
-INTO company (company_name, industry, has_placement) VALUES ('Cyberdyne Systems', 'Technology', 'N')
-INTO company (company_name, industry, has_placement) VALUES ('Weyland-Yutani Corp', 'Aerospace', 'Y')
-INTO company (company_name, industry, has_placement) VALUES ('Dunder Mifflin Paper', 'Retail', 'Y')
-INTO company (company_name, industry, has_placement) VALUES ('Stark Solutions', 'Consulting', 'Y');
 
 
 
