@@ -42,7 +42,7 @@ SELECT
     day_of_the_week
 FROM
     timetable
-ORDER BY formatted_start_time, formatted_date;
+ORDER BY formatted_start_time, formatted_date; 
 
 CREATE TABLE student (
     student_id NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
