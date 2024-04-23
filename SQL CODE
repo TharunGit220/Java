@@ -22,6 +22,28 @@ CREATE TABLE timetable (
     day_of_the_week VARCHAR2(20) CHECK (day_of_the_week IN ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'))
 );
 
+Data for timetable 
+INSERT INTO timetable (timetable_date, start_time, end_time, day_of_the_week)
+VALUES (DATE '2024-05-01', TO_TIMESTAMP('2024-05-01 08:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-05-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Monday');
+
+INSERT INTO timetable (timetable_date, start_time, end_time, day_of_the_week)
+VALUES (DATE '2024-05-01', TO_TIMESTAMP('2024-05-01 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-05-01 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Monday');
+
+INSERT INTO timetable (timetable_date, start_time, end_time, day_of_the_week)
+VALUES (DATE '2024-05-01', TO_TIMESTAMP('2024-05-01 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2024-05-01 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Monday');
+
+
+
+SELECT
+    timetable_id,
+    TO_CHAR(timetable_date, 'DD-MON-YYYY') AS formatted_date, 
+    TO_CHAR(start_time, 'HH.MI AM') AS formatted_start_time,
+    TO_CHAR(end_time, 'HH.MI AM') AS formatted_end_time,
+    day_of_the_week
+FROM
+    timetable
+ORDER BY formatted_start_time, formatted_date;
+
 CREATE TABLE student (
     student_id NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
     first_name VARCHAR2(50),
@@ -36,6 +58,12 @@ INSERT INTO student (first_name, last_name, date_of_birth, email) VALUES ('Jane'
 INSERT INTO student (first_name, last_name, date_of_birth, email) VALUES ('Alice', 'Johnson', DATE '1999-09-04', 'alice.johnson@example.com');
 INSERT INTO student (first_name, last_name, date_of_birth, email) VALUES ('Bob', 'Brown', DATE '1998-03-17', 'bob.brown@example.com');
 INSERT INTO student (first_name, last_name, date_of_birth, email) VALUES ('Carol', 'Martinez', DATE '2001-01-26', 'carol.martinez@example.com');
+
+
+CREATE TABLE department (
+    department_id NUMBER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) PRIMARY KEY,
+    dept_name VARCHAR2(100)
+);
 
 
 
@@ -58,5 +86,41 @@ refrences/websites :
 https://stackoverflow.com/questions/19154453/how-to-write-a-query-to-ensure-email-contains 
 email format check by  Naren Babu R
 
+
+
+
+
+
+Dropped Code for storing data in time table
+DECLARE
+    base_date DATE := DATE '2024-01-01';  -- Start date, adjust as needed
+    s_time TIMESTAMP;
+    e_time TIMESTAMP;
+    day_name VARCHAR2(10);
+BEGIN
+    FOR i IN 0..364 LOOP  -- Loop through the days, adjust range as needed for longer periods
+        day_name := TO_CHAR(base_date + i, 'Day');
+        
+        -- Check if it's a weekday
+        IF day_name IN ('Monday   ', 'Tuesday  ', 'Wednesday', 'Thursday ', 'Friday   ') THEN
+            FOR j IN 8..17 LOOP  -- Time slots from 08:00 to 18:00
+                s_time := TO_TIMESTAMP(TO_CHAR(base_date + i, 'YYYY-MM-DD') || ' ' || TO_CHAR(j, 'FM00') || ':00:00', 'YYYY-MM-DD HH24:MI:SS');
+                e_time := s_time + INTERVAL '1' HOUR;
+
+                INSERT INTO timetable (timetable_date, start_time, end_time, day_of_the_week)
+                VALUES (base_date + i, s_time, e_time, TRIM(day_name));
+            END LOOP;
+        END IF;
+    END LOOP;
+END;
+
+
+SELECT
+    timetable_id,
+    TO_CHAR(start_time, 'HH.MI AM') AS formatted_start_time,
+    TO_CHAR(end_time, 'HH.MI AM') AS formatted_end_time,
+    day_of_the_week
+FROM
+    timetable;
 
 
